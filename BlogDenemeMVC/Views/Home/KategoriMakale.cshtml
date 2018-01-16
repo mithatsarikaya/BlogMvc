@@ -1,0 +1,52 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<BlogDenemeMVC.Models.Makale>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="card mb-4">
+
+
+    @foreach (var item in Model)
+    {
+        <img class="card-img-top" src="@item.Resim" alt="Card image cap">
+        <div class="card-body">
+            <h2 class="card-title">@item.Baslik</h2>
+
+            @if (item.Icerik.Length > 150)
+                {
+                <p class="card-text">
+                    @Html.Raw(item.Icerik.Substring(0, 150)) ...
+                </p>
+            }
+            else
+            {
+                <p class="card-text">
+                    @Html.Raw(item.Icerik)
+                </p>
+            }
+
+            <a href="/Home/MakaleDetay/@item.MakeleID" class="btn btn-primary">Read More &rarr;</a>
+        </div>
+        <div class="card-footer text-muted">
+            @String.Format("{0: MMMM yyyy}", item.EklenmeTarihi), 2017 by
+            <img class="rounded-circle img-responsive" width="50" src="@item.Uye.UyeFoto" alt="@item.Uye.AdSoyad" /> <a href="/Uye/Index/@item.Uye.UyeID">@item.Uye.KullaniciAdi</a>
+
+        </div>
+    }
+    @*<div class="row justify-content-center">
+            <div class="col-md-8  text-center">
+                <div class="pagedList page-link pagination-lg page-item">
+                    @Html.PagedListPager(Model,Page=>Url.Action("Index",new {Page }),PagedListRenderOptions.Classic)
+                </div>
+            </div>
+        </div>*@
+    <ul class="pagination justify-content-center mb-4">
+        <li class="page-item">
+            @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page }), PagedListRenderOptions.Classic)
+        </li>
+    </ul>
+
+</div>
+

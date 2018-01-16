@@ -1,0 +1,50 @@
+﻿@model BlogDenemeMVC.Models.Uye
+
+@{
+    ViewBag.Title = "UyeProfil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UyeProfil</h2>
+
+<div>
+    <h4>Uye</h4>
+    <hr />
+    <dl class="dl-horizontal">
+      
+
+        <dt>
+            @Html.DisplayNameFor(model => model.KullaniciAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KullaniciAdi)
+        </dd>
+
+     
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdSoyad)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdSoyad)
+        </dd>
+
+        
+
+        <dd>
+            <img src="@Model.UyeFoto" alt="Alternate Text" />
+        </dd>
+
+    </dl>
+</div>
+<h4>Son Eklenen Makaleler</h4>
+<div >
+    @foreach (var item in Model.Makales.OrderByDescending(x=>x.MakeleID).Take(5))
+    {
+        <li><a href="/Home/MakaleDetay/@item.MakeleID">@item.Baslik</a></li>
+    }
+
+</div>
+

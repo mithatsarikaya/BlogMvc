@@ -1,0 +1,229 @@
+﻿@model BlogDenemeMVC.Models.Makale
+<!DOCTYPE html>
+<html class=''>
+<head>
+
+    <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script>
+    <script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script>
+    <script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script>
+    <meta charset='UTF-8'>
+    <meta name="robots" content="noindex">
+    <link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+    <link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+    <link rel="canonical" href="https://codepen.io/dylanjameswagner/pen/XddMyZ?depth=everything&limit=all&order=popularity&page=28&q=slider&show_forks=false" />
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'>
+    <style class="cp-pen-styles">
+        /** base */
+        *, *:before, *:after {
+            box-sizing: border-box;
+        }
+        /** slider */
+        .slider {
+            position: relative;
+            max-width: 100%;
+            max-height: 100%;
+            margin: 0 auto;
+        }
+
+            .slider:hover .slider__radiobox-label--prev,
+            .slider:hover .slider__radiobox-label--next {
+                opacity: 1;
+            }
+
+            .slider:hover .slider__radiobox-label--prev {
+                left: 6%;
+            }
+
+            .slider:hover .slider__radiobox-label--next {
+                right: 6%;
+            }
+
+        .slider--full {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .slider--fixed {
+            width: 600px;
+            height: 400px;
+        }
+
+        .slider--proportional {
+            width: 960px;
+            height: auto;
+        }
+
+        .slider__inner {
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+            background: #ddd;
+        }
+
+        .slider--full .slider__inner {
+            width: 100%;
+            height: 100%;
+        }
+
+        .slider--fixed .slider__inner {
+            width: 100%;
+            height: 100%;
+        }
+
+        .slider--proportional .slider__inner {
+            width: 100%;
+            height: 0;
+        }
+
+        .slider--proportional--4x3 .slider__inner {
+            padding-top: 75%;
+        }
+
+        .slider--proportional--5x4 .slider__inner {
+            padding-top: 80%;
+        }
+
+        .slider--proportional--16x9 .slider__inner {
+            padding-top: 56.25%;
+        }
+
+        .slider__slides {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            width: 400%;
+            height: 100%;
+            overflow-y: hidden;
+            -webkit-transition: margin-left 0.4s;
+            transition: margin-left 0.4s;
+        }
+
+        .slider__slide {
+            display: block;
+            float: left;
+            position: relative;
+            width: 25%;
+            height: 100%;
+            /** background-image method */
+            background: no-repeat 50% 50%;
+            background-size: cover;
+            /** inline image method */
+        }
+
+        .slider__radiobox-label {
+            display: block;
+            position: absolute;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .slider__radiobox-label--item {
+            bottom: 6%;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+            padding: 6px;
+            border-radius: 50%;
+            background: black;
+            opacity: 0.3;
+            -webkit-transition: opacity 0.2s;
+            transition: opacity 0.2s;
+        }
+
+            .slider__radiobox-label--item:hover {
+                opacity: 0.5;
+            }
+
+        .slider__radiobox-label--item--1 {
+            margin-left: -36px;
+        }
+
+        .slider__radiobox-label--item--2 {
+            margin-left: -12px;
+        }
+
+        .slider__radiobox-label--item--3 {
+            margin-left: 12px;
+        }
+
+        .slider__radiobox-label--item--4 {
+            margin-left: 36px;
+        }
+
+        .slider__radiobox-label--prev, .slider__radiobox-label--next {
+            display: none;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            height: 0;
+            border: 10px solid black;
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            opacity: 0;
+            -webkit-transition: left 0.2s, right 0.2s, opacity 0.2s;
+            transition: left 0.2s, right 0.2s, opacity 0.2s;
+        }
+
+        .slider__radiobox-label--prev {
+            left: -6%;
+            border-left: 0;
+            border-right-width: 17px;
+        }
+
+        .slider__radiobox-label--next {
+            right: -6%;
+            border-right: 0;
+            border-left-width: 17px;
+        }
+
+        .slider__radiobox {
+            display: none;
+        }
+
+        .slider__radiobox--1:checked ~ .slider__slides {
+            margin-left: 0;
+        }
+
+        .slider__radiobox--2:checked ~ .slider__slides {
+            margin-left: -100%;
+        }
+
+        .slider__radiobox--3:checked ~ .slider__slides {
+            margin-left: -200%;
+        }
+
+        .slider__radiobox--4:checked ~ .slider__slides {
+            margin-left: -300%;
+        }
+
+        .slider__radiobox--1:checked + .slider__radiobox-label--item--1, .slider__radiobox--2:checked + .slider__radiobox-label--item--2, .slider__radiobox--3:checked + .slider__radiobox-label--item--3, .slider__radiobox--4:checked + .slider__radiobox-label--item--4 {
+            opacity: 1;
+        }
+
+        .slider__radiobox--1:checked ~ .slider__radiobox-label--prev--4, .slider__radiobox--1:checked ~ .slider__radiobox-label--next--2, .slider__radiobox--2:checked ~ .slider__radiobox-label--prev--1, .slider__radiobox--2:checked ~ .slider__radiobox-label--next--3, .slider__radiobox--3:checked ~ .slider__radiobox-label--prev--2, .slider__radiobox--3:checked ~ .slider__radiobox-label--next--4, .slider__radiobox--4:checked ~ .slider__radiobox-label--prev--3, .slider__radiobox--4:checked ~ .slider__radiobox-label--next--1 {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider slider--proportional--4x3 ">
+        <!-- <div class="slider slider--fixed"> -->
+        <!-- <div class="slider slider--proportional slider--proportional--16x9"> -->
+        <div class="slider__inner">
+            <input checked type="radio" name="slider__radiobox" id="slider__radiobox--1" class="slider__radiobox slider__radiobox--1"><label for="slider__radiobox--1" class="slider__radiobox-label slider__radiobox-label--item slider__radiobox-label--item--1"></label><label for="slider__radiobox--4" class="slider__radiobox-label slider__radiobox-label--prev slider__radiobox-label--prev--4"></label><label for="slider__radiobox--2" class="slider__radiobox-label slider__radiobox-label--next slider__radiobox-label--next--2"></label>
+            <input type="radio" name="slider__radiobox" id="slider__radiobox--2" class="slider__radiobox slider__radiobox--2"><label for="slider__radiobox--2" class="slider__radiobox-label slider__radiobox-label--item slider__radiobox-label--item--2"></label><label for="slider__radiobox--1" class="slider__radiobox-label slider__radiobox-label--prev slider__radiobox-label--prev--1"></label><label for="slider__radiobox--3" class="slider__radiobox-label slider__radiobox-label--next slider__radiobox-label--next--3"></label>
+            <input type="radio" name="slider__radiobox" id="slider__radiobox--3" class="slider__radiobox slider__radiobox--3"><label for="slider__radiobox--3" class="slider__radiobox-label slider__radiobox-label--item slider__radiobox-label--item--3"></label><label for="slider__radiobox--2" class="slider__radiobox-label slider__radiobox-label--prev slider__radiobox-label--prev--2"></label><label for="slider__radiobox--4" class="slider__radiobox-label slider__radiobox-label--next slider__radiobox-label--next--4"></label>
+            <input type="radio" name="slider__radiobox" id="slider__radiobox--4" class="slider__radiobox slider__radiobox--4"><label for="slider__radiobox--4" class="slider__radiobox-label slider__radiobox-label--item slider__radiobox-label--item--4"></label><label for="slider__radiobox--3" class="slider__radiobox-label slider__radiobox-label--prev slider__radiobox-label--prev--3"></label><label for="slider__radiobox--1" class="slider__radiobox-label slider__radiobox-label--next slider__radiobox-label--next--1"></label>
+            <div class="slider__slides">
+                <div class="slider__slide slider__slide--1" style="background-image: url(); background-image: url('../../Uploads/MakaleFoto/slider1.jpg'); "></div>
+                <div class="slider__slide slider__slide--2" style="background-image: url(); background-image: url('../../Uploads/MakaleFoto/slider2.jpg'); "></div>
+                <div class="slider__slide slider__slide--3" style="background-image: url(); background-image: url('../../Uploads/MakaleFoto/slider3.jpg'); "></div>
+                <div class="slider__slide slider__slide--4" style="background-image: url(); background-image: url('../../Uploads/MakaleFoto/2f382a38-77b3-4e53-9933-7ccf05dad3f9.jpg'); "></div>
+            </div>
+        </div>
+        </section>
+</body>
+</html>
